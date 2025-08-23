@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getAllGames,
+  listGames,
   getGame,
   addGameGet,
   addGamePost,
@@ -11,7 +11,7 @@ import {
 
 const gamesRouter = Router();
 
-gamesRouter.get('/', getAllGames);
+gamesRouter.get('/', listGames);
 gamesRouter.get('/:id', getGame);
 gamesRouter.get('/add', addGameGet);
 gamesRouter.post('/add', addGamePost);

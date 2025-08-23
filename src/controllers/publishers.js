@@ -1,8 +1,8 @@
 import { Publishers } from '../db.js';
 
-export async function getAllPublishers(_req, res) {
+export async function listPublishers(_req, res) {
   const publishers = await Publishers.getAll();
-  res.render('publishers', { publishers });
+  res.render('list-publishers', { publishers });
 }
 
 export function getPublisher(_req, res) {

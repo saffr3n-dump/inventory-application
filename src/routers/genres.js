@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getAllGenres,
+  listGenres,
   getGenre,
   addGenreGet,
   addGenrePost,
@@ -11,7 +11,7 @@ import {
 
 const genresRouter = Router();
 
-genresRouter.get('/', getAllGenres);
+genresRouter.get('/', listGenres);
 genresRouter.get('/:id', getGenre);
 genresRouter.get('/add', addGenreGet);
 genresRouter.post('/add', addGenrePost);

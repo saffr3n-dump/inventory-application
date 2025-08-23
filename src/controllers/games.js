@@ -1,8 +1,8 @@
 import { Games } from '../db.js';
 
-export async function getAllGames(_req, res) {
+export async function listGames(_req, res) {
   const games = await Games.getAll();
-  res.render('games', { games });
+  res.render('list-games', { games });
 }
 
 export function getGame(_req, res) {

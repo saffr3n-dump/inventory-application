@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getAllPublishers,
+  listPublishers,
   getPublisher,
   addPublisherGet,
   addPublisherPost,
@@ -11,7 +11,7 @@ import {
 
 const publishersRouter = Router();
 
-publishersRouter.get('/', getAllPublishers);
+publishersRouter.get('/', listPublishers);
 publishersRouter.get('/:id', getPublisher);
 publishersRouter.get('/add', addPublisherGet);
 publishersRouter.post('/add', addPublisherPost);

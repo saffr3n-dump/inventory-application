@@ -1,8 +1,8 @@
 import { Genres } from '../db.js';
 
-export async function getAllGenres(_req, res) {
+export async function listGenres(_req, res) {
   const genres = await Genres.getAll();
-  res.render('genres', { genres });
+  res.render('list-genres', { genres });
 }
 
 export function getGenre(_req, res) {
