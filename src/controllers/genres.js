@@ -1,5 +1,8 @@
-export function getAllGenres(_req, res) {
-  res.send('GET /genres');
+import { Genres } from '../db.js';
+
+export async function getAllGenres(_req, res) {
+  const genres = await Genres.getAll();
+  res.render('genres', { genres });
 }
 
 export function getGenre(_req, res) {

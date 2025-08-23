@@ -38,3 +38,21 @@ export class Publishers {
     return res.rows;
   }
 }
+
+export class Genres {
+  static async getAll() {
+    const query = `
+      SELECT
+        genres.id,
+        genres.name,
+        COUNT(*) AS games
+      FROM genres
+      JOIN games_genres ON games_genres.genre_id = genres.id
+      JOIN games ON games.id = games_genres.game_id
+      GROUP BY genres.id
+      ORDER BY genres.name;
+    `;
+    const res = await pool.query(query);
+    return res.rows;
+  }
+}
