@@ -1,5 +1,8 @@
-export function getAllGames(_req, res) {
-  res.send('GET /games');
+import { Games } from '../db.js';
+
+export async function getAllGames(_req, res) {
+  const games = await Games.getAll();
+  res.render('games', { games });
 }
 
 export function getGame(_req, res) {

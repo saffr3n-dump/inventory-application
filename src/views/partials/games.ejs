@@ -1,0 +1,32 @@
+<h1><%= title %></h1>
+
+<% if (games.length) { %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Publisher</th>
+        <th>Genre</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (const { id, title, publisher, genres } of games) { %>
+        <tr>
+          <td><a href="/games/<%= id %>"><%= title %></a></td>
+          <td><a href="/publishers/<%= publisher.id %>"><%= publisher.name %></a></td>
+          <td>
+            <ul>
+              <% for (const genre of genres) { %>
+                <li><a href="/genres/<%= genre.id %>"><%= genre.name %></a></li>
+              <% } %>
+            </ul>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% } else { %>
+  <p>
+    Unfortunately there are no games yet, but you can always add one yourself!
+  </p>
+<% } %>
