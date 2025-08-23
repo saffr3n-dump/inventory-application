@@ -5,8 +5,9 @@ export async function listGames(_req, res) {
   res.render('list-games', { games });
 }
 
-export function getGame(_req, res) {
-  res.send('GET /games/:id');
+export async function getGame(req, res) {
+  const game = await Games.getOne(req.params.id);
+  res.render('get-game', { game });
 }
 
 export function addGameGet(_req, res) {

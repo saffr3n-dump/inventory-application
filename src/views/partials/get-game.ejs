@@ -1,0 +1,22 @@
+<h1><%= game.title %></h1>
+
+<dl>
+  <li>
+    <dt>Publisher</dt>
+    <dd>
+      <a href="/publishers/<%= game.publisher.id %>">
+        <%= game.publisher.name %>
+      </a>
+    </dd>
+  </li>
+  <li>
+    <dt>Genres</dt>
+    <dd>
+      <ul>
+        <% for (const genre of game.genres) { %>
+          <li><a href="/genres/<%= genre.id %>"><%= genre.name %></a></li>
+        <% } %>
+      </ul>
+    </dd>
+  </li>
+</dl>
