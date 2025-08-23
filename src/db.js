@@ -101,4 +101,27 @@ export class Genres {
     const res = await pool.query(query);
     return res.rows;
   }
+
+  static async getOne(id) {
+    const query = `
+      SELECT
+        genres.name,
+        jsonb_agg(jsonb_build_object(
+          'id',        games.id,
+          'title',     games.title,
+          'publisher', jsonb_build_object(
+            'id',   publishers.id,
+            'name', publishers.name
+          )
+        )) AS games
+      FROM genres
+      JOIN games_genres ON games_genres.genre_id = genres.id
+      JOIN games ON games.id = games_genres.game_id
+      JOIN publishers ON publishers.id = games.publisher_id
+      WHERE genres.id = $1
+      GROUP BY genres.name;
+    `;
+    const res = await pool.query(query, [id]);
+    return res.rows[0];
+  }
 }

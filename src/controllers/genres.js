@@ -5,8 +5,9 @@ export async function listGenres(_req, res) {
   res.render('list-genres', { genres });
 }
 
-export function getGenre(_req, res) {
-  res.send('GET /genres/:id');
+export async function getGenre(req, res) {
+  const genre = await Genres.getOne(req.params.id);
+  res.render('get-genre', { genre });
 }
 
 export function addGenreGet(_req, res) {
