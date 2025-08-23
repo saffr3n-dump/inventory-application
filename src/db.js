@@ -54,6 +54,35 @@ export class Publishers {
     const res = await pool.query(query);
     return res.rows;
   }
+
+  static async getOne(id) {
+    const query = `
+      SELECT
+        publishers.name,
+        jsonb_agg(sub.game_obj) AS games
+      FROM publishers
+      JOIN (
+        SELECT
+          games.publisher_id,
+          jsonb_build_object(
+            'id',     games.id,
+            'title',  games.title,
+            'genres', jsonb_agg(jsonb_build_object(
+              'id',   genres.id,
+              'name', genres.name
+            ))
+          ) AS game_obj
+        FROM games
+        JOIN games_genres ON games_genres.game_id = games.id
+        JOIN genres ON genres.id = games_genres.genre_id
+        GROUP BY games.id
+      ) AS sub ON sub.publisher_id = publishers.id
+      WHERE publishers.id = $1
+      GROUP BY publishers.name;
+    `;
+    const res = await pool.query(query, [id]);
+    return res.rows[0];
+  }
 }
 
 export class Genres {

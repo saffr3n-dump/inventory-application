@@ -5,8 +5,9 @@ export async function listPublishers(_req, res) {
   res.render('list-publishers', { publishers });
 }
 
-export function getPublisher(_req, res) {
-  res.send('GET /publishers/:id');
+export async function getPublisher(req, res) {
+  const publisher = await Publishers.getOne(req.params.id);
+  res.render('get-publisher', { publisher });
 }
 
 export function addPublisherGet(_req, res) {
