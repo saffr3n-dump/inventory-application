@@ -14,7 +14,25 @@ export class Games {
       JOIN publishers ON games.publisher_id = publishers.id
       JOIN games_genres ON games.id = games_genres.game_id
       JOIN genres ON genres.id = games_genres.genre_id
-      GROUP BY games.id, games.title, publishers.id, publishers.name;
+      GROUP BY games.id, games.title, publishers.id, publishers.name
+      ORDER BY games.title;
+    `;
+    const res = await pool.query(query);
+    return res.rows;
+  }
+}
+
+export class Publishers {
+  static async getAll() {
+    const query = `
+      SELECT
+        publishers.id,
+        publishers.name,
+        COUNT(*) AS games
+      FROM publishers
+      JOIN games ON games.publisher_id = publishers.id
+      GROUP BY publishers.id
+      ORDER BY publishers.name;
     `;
     const res = await pool.query(query);
     return res.rows;

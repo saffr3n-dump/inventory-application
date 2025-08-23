@@ -1,5 +1,8 @@
-export function getAllPublishers(_req, res) {
-  res.send('GET /publishers');
+import { Publishers } from '../db.js';
+
+export async function getAllPublishers(_req, res) {
+  const publishers = await Publishers.getAll();
+  res.render('publishers', { publishers });
 }
 
 export function getPublisher(_req, res) {
