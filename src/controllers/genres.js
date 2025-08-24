@@ -14,8 +14,9 @@ export function addGenreGet(_req, res) {
   res.render('add-genre');
 }
 
-export function addGenrePost(_req, res) {
-  res.send('POST /genres/add');
+export async function addGenrePost(req, res) {
+  const genre = await Genres.addOne(req.body);
+  res.redirect(`/genres/${genre.id}`);
 }
 
 export function editGenreGet(_req, res) {

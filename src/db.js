@@ -120,10 +120,10 @@ export class Genres {
       SELECT
         genres.id,
         genres.name,
-        COUNT(*) AS games
+        COUNT(games.id) AS games
       FROM genres
-      JOIN games_genres ON games_genres.genre_id = genres.id
-      JOIN games ON games.id = games_genres.game_id
+      LEFT JOIN games_genres ON games_genres.genre_id = genres.id
+      LEFT JOIN games ON games.id = games_genres.game_id
       GROUP BY genres.id
       ORDER BY genres.name;
     `;
@@ -135,22 +135,35 @@ export class Genres {
     const query = `
       SELECT
         genres.name,
-        jsonb_agg(jsonb_build_object(
-          'id',        games.id,
-          'title',     games.title,
-          'publisher', jsonb_build_object(
-            'id',   publishers.id,
-            'name', publishers.name
-          )
-        )) AS games
+        COALESCE(
+          jsonb_agg(jsonb_build_object(
+            'id',        games.id,
+            'title',     games.title,
+            'publisher', jsonb_build_object(
+              'id',   publishers.id,
+              'name', publishers.name
+            )
+          )) FILTER (WHERE games.id IS NOT NULL),
+          '[]'::jsonb
+        ) AS games
       FROM genres
-      JOIN games_genres ON games_genres.genre_id = genres.id
-      JOIN games ON games.id = games_genres.game_id
-      JOIN publishers ON publishers.id = games.publisher_id
+      LEFT JOIN games_genres ON games_genres.genre_id = genres.id
+      LEFT JOIN games ON games.id = games_genres.game_id
+      LEFT JOIN publishers ON publishers.id = games.publisher_id
       WHERE genres.id = $1
       GROUP BY genres.name;
     `;
     const res = await pool.query(query, [id]);
+    return res.rows[0];
+  }
+
+  static async addOne({ name }) {
+    const query = `
+      INSERT INTO genres (name) VALUES
+        ($1)
+      RETURNING id;
+    `;
+    const res = await pool.query(query, [name]);
     return res.rows[0];
   }
 }
