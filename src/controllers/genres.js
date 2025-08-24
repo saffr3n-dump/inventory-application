@@ -11,7 +11,7 @@ export async function getGenre(req, res) {
 }
 
 export function addGenreGet(_req, res) {
-  res.send('GET /genres/add');
+  res.render('add-genre');
 }
 
 export function addGenrePost(_req, res) {
