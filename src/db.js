@@ -40,6 +40,7 @@ export class Games {
   }
 
   static async addOne({ title, publisher, genres }) {
+    if (!Array.isArray(genres)) genres = [genres];
     const newGameQuery = `
       INSERT INTO games (title, publisher_id) VALUES
         ($1, $2)
