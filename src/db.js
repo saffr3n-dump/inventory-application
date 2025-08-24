@@ -61,9 +61,9 @@ export class Publishers {
       SELECT
         publishers.id,
         publishers.name,
-        COUNT(*) AS games
+        COUNT(games.id) AS games
       FROM publishers
-      JOIN games ON games.publisher_id = publishers.id
+      LEFT JOIN games ON games.publisher_id = publishers.id
       GROUP BY publishers.id
       ORDER BY publishers.name;
     `;
@@ -75,9 +75,12 @@ export class Publishers {
     const query = `
       SELECT
         publishers.name,
-        jsonb_agg(sub.game_obj) AS games
+        COALESCE (
+          jsonb_agg(sub.game_obj) FILTER (WHERE sub.game_obj IS NOT NULL),
+          '[]'::jsonb
+        ) AS games
       FROM publishers
-      JOIN (
+      LEFT JOIN (
         SELECT
           games.publisher_id,
           jsonb_build_object(
@@ -97,6 +100,16 @@ export class Publishers {
       GROUP BY publishers.name;
     `;
     const res = await pool.query(query, [id]);
+    return res.rows[0];
+  }
+
+  static async addOne({ name }) {
+    const query = `
+      INSERT INTO publishers (name) VALUES
+        ($1)
+      RETURNING id;
+    `;
+    const res = await pool.query(query, [name]);
     return res.rows[0];
   }
 }

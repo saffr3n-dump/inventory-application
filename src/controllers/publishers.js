@@ -14,8 +14,9 @@ export function addPublisherGet(_req, res) {
   res.render('add-publisher');
 }
 
-export function addPublisherPost(_req, res) {
-  res.send('POST /publishers/add');
+export async function addPublisherPost(req, res) {
+  const publisher = await Publishers.addOne(req.body);
+  res.redirect(`/publishers/${publisher.id}`);
 }
 
 export function editPublisherGet(_req, res) {
