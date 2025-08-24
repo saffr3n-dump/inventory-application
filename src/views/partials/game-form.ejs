@@ -1,0 +1,78 @@
+<h1><%= title %></h1>
+
+<form
+  action="/games/<%= locals.game ? `${game.id}/edit` : 'add' %>"
+  method="POST"
+>
+  <label for="title">
+    Title
+    <input
+      type="text"
+      name="title"
+      id="title"
+      required
+      value="<%= locals.game ? game.title : '' %>"
+    >
+  </label>
+
+  <label for="publisher">
+    Publisher
+    <select name="publisher" id="publisher" required>
+      <option
+        <%= locals.game ? '' : 'selected' %>
+        disabled
+      ></option>
+      <% for (const publisher of publishers) { %>
+        <option
+          value="<%= publisher.id %>"
+          <%=
+            locals.game &&
+            game.publisher.id === publisher.id
+              ? 'selected'
+              : ''
+          %>
+        >
+          <%= publisher.name %>
+        </option>
+      <% } %>
+    </select>
+  </label>
+
+  <fieldset>
+    <legend>Genres (select at least one)</legend>
+    <% for (const genre of genres) { %>
+      <label for="genre-<%= genre.id %>">
+        <%= genre.name %>
+        <input
+          type="checkbox"
+          name="genres"
+          value="<%= genre.id %>"
+          id="genre-<%= genre.id %>"
+          <%=
+            locals.game &&
+            game.genres.map((genre) => genre.id).includes(genre.id)
+              ? 'checked'
+              : ''
+          %>
+        >
+      </label>
+    <% } %>
+  </fieldset>
+
+  <button type="submit">
+    <%= locals.game ? 'Edit' : 'Add' %>
+  </button>
+</form>
+
+<script>
+  const form = document.querySelector('form');
+  const cboxes = Array.from(form.querySelectorAll('input[type="checkbox"]'));
+  form.onsubmit = (e) => {
+    const checked = cboxes.some((cbox) => cbox.checked);
+    if (checked) return;
+    e.preventDefault();
+    cboxes[0].setCustomValidity('At least one genre must be selected');
+    cboxes[0].reportValidity();
+    cboxes[0].setCustomValidity('');
+  }
+</script>
