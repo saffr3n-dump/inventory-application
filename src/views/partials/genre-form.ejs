@@ -1,0 +1,21 @@
+<h1><%= title %></h1>
+
+<form
+  action="/genres/<%= locals.genre ? `${genre.id}/edit` : 'add' %>"
+  method="POST"
+>
+  <label for="name">
+    Name
+    <input
+      type="text"
+      name="name"
+      id="name"
+      required
+      value="<%= locals.genre ? genre.name : '' %>"
+    >
+  </label>
+
+  <button type="submit">
+    <%= locals.genre ? 'Edit' : 'Add' %>
+  </button>
+</form>

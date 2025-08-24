@@ -1,0 +1,21 @@
+<h1><%= title %></h1>
+
+<form
+  action="/publishers/<%= locals.publisher ? `${publisher.id}/edit` : 'add' %>"
+  method="POST"
+>
+  <label for="name">
+    Name
+    <input
+      type="text"
+      name="name"
+      id="name"
+      required
+      value="<%= locals.publisher ? publisher.name : '' %>"
+    >
+  </label>
+
+  <button type="submit">
+    <%= locals.publisher ? 'Edit' : 'Add' %>
+  </button>
+</form>
