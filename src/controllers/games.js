@@ -16,8 +16,9 @@ export async function addGameGet(_req, res) {
   res.render('add-game', { publishers, genres });
 }
 
-export function addGamePost(req, res) {
-  res.send(req.body);
+export async function addGamePost(req, res) {
+  const game = await Games.addOne(req.body);
+  res.redirect(`/games/${game.id}`);
 }
 
 export function editGameGet(_req, res) {

@@ -37,6 +37,22 @@ export class Games {
     const res = await pool.query(query, [id]);
     return res.rows[0];
   }
+
+  static async addOne({ title, publisher, genres }) {
+    const newGameQuery = `
+      INSERT INTO games (title, publisher_id) VALUES
+        ($1, $2)
+      RETURNING id;
+    `;
+    const game = (await pool.query(newGameQuery, [title, publisher])).rows[0];
+    const newRelQuery = `
+      INSERT INTO games_genres (game_id, genre_id)
+      SELECT $1, genre_id
+      FROM unnest($2::int[]) AS genre_id;
+    `;
+    await pool.query(newRelQuery, [game.id, genres]);
+    return game;
+  }
 }
 
 export class Publishers {

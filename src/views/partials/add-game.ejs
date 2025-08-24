@@ -21,7 +21,7 @@
     <% for (const genre of genres) { %>
       <label for="genre-<%= genre.id %>">
         <%= genre.name %>
-        <input type="checkbox" name="genre" value="<%= genre.id %>" id="genre-<%= genre.id %>" required>
+        <input type="checkbox" name="genres" value="<%= genre.id %>" id="genre-<%= genre.id %>" required>
       </label>
     <% } %>
   </fieldset>
