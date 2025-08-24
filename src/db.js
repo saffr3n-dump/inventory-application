@@ -135,6 +135,7 @@ export class Genres {
   static async getOne(id) {
     const query = `
       SELECT
+        genres.id,
         genres.name,
         COALESCE(
           jsonb_agg(jsonb_build_object(
@@ -152,7 +153,7 @@ export class Genres {
       LEFT JOIN games ON games.id = games_genres.game_id
       LEFT JOIN publishers ON publishers.id = games.publisher_id
       WHERE genres.id = $1
-      GROUP BY genres.name;
+      GROUP BY genres.id;
     `;
     const res = await pool.query(query, [id]);
     return res.rows[0];

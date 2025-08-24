@@ -19,8 +19,9 @@ export async function addGenrePost(req, res) {
   res.redirect(`/genres/${genre.id}`);
 }
 
-export function editGenreGet(_req, res) {
-  res.send('GET /genres/:id/edit');
+export async function editGenreGet(req, res) {
+  const genre = await Genres.getOne(req.params.id);
+  res.render('edit-genre', { genre });
 }
 
 export function editGenrePost(_req, res) {
