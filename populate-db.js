@@ -19,7 +19,7 @@ const QUERY = `
 
   CREATE TABLE IF NOT EXISTS games_genres (
     game_id  INTEGER REFERENCES games(id) ON DELETE CASCADE,
-    genre_id INTEGER REFERENCES genres(id) ON DELETE CASCADE,
+    genre_id INTEGER REFERENCES genres(id) ON DELETE RESTRICT,
     PRIMARY KEY (game_id, genre_id)
   );
   CREATE INDEX IF NOT EXISTS idx_games_genres_genre_id ON games_genres(genre_id);
