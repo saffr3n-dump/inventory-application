@@ -1,4 +1,4 @@
-import { Games } from '../db.js';
+import { Games, Genres, Publishers } from '../db.js';
 
 export async function listGames(_req, res) {
   const games = await Games.getAll();
@@ -10,12 +10,14 @@ export async function getGame(req, res) {
   res.render('get-game', { game });
 }
 
-export function addGameGet(_req, res) {
-  res.send('GET /games/add');
+export async function addGameGet(_req, res) {
+  const publishers = await Publishers.getAll();
+  const genres = await Genres.getAll();
+  res.render('add-game', { publishers, genres });
 }
 
-export function addGamePost(_req, res) {
-  res.send('POST /games/add');
+export function addGamePost(req, res) {
+  res.send(req.body);
 }
 
 export function editGameGet(_req, res) {
