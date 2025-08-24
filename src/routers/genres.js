@@ -12,9 +12,9 @@ import {
 const genresRouter = Router();
 
 genresRouter.get('/', listGenres);
-genresRouter.get('/:id', getGenre);
 genresRouter.get('/add', addGenreGet);
 genresRouter.post('/add', addGenrePost);
+genresRouter.get('/:id', getGenre);
 genresRouter.get('/:id/edit', editGenreGet);
 genresRouter.post('/:id/edit', editGenrePost);
 genresRouter.post('/:id/delete', deleteGenre);

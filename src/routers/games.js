@@ -12,9 +12,9 @@ import {
 const gamesRouter = Router();
 
 gamesRouter.get('/', listGames);
-gamesRouter.get('/:id', getGame);
 gamesRouter.get('/add', addGameGet);
 gamesRouter.post('/add', addGamePost);
+gamesRouter.get('/:id', getGame);
 gamesRouter.get('/:id/edit', editGameGet);
 gamesRouter.post('/:id/edit', editGamePost);
 gamesRouter.post('/:id/delete', deleteGame);
