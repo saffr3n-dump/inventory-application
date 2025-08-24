@@ -75,6 +75,7 @@ export class Publishers {
   static async getOne(id) {
     const query = `
       SELECT
+        publishers.id,
         publishers.name,
         COALESCE (
           jsonb_agg(sub.game_obj) FILTER (WHERE sub.game_obj IS NOT NULL),
@@ -98,7 +99,7 @@ export class Publishers {
         GROUP BY games.id
       ) AS sub ON sub.publisher_id = publishers.id
       WHERE publishers.id = $1
-      GROUP BY publishers.name;
+      GROUP BY publishers.id;
     `;
     const res = await pool.query(query, [id]);
     return res.rows[0];
