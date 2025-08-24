@@ -24,6 +24,7 @@ export class Games {
   static async getOne(id) {
     const query = `
       SELECT
+        games.id,
         games.title,
         jsonb_build_object('id', publishers.id, 'name', publishers.name) AS publisher,
         jsonb_agg(jsonb_build_object('id', genres.id, 'name', genres.name)) AS genres
@@ -32,7 +33,7 @@ export class Games {
       JOIN games_genres ON games.id = games_genres.game_id
       JOIN genres ON genres.id = games_genres.genre_id
       WHERE games.id = $1
-      GROUP BY games.title, publishers.id, publishers.name;
+      GROUP BY games.id, games.title, publishers.id, publishers.name;
     `;
     const res = await pool.query(query, [id]);
     return res.rows[0];

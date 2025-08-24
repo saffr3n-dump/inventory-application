@@ -21,8 +21,11 @@ export async function addGamePost(req, res) {
   res.redirect(`/games/${game.id}`);
 }
 
-export function editGameGet(_req, res) {
-  res.send('GET /games/:id/edit');
+export async function editGameGet(req, res) {
+  const game = await Games.getOne(req.params.id);
+  const publishers = await Publishers.getAll();
+  const genres = await Genres.getAll();
+  res.render('edit-game', { game, publishers, genres });
 }
 
 export function editGamePost(_req, res) {
