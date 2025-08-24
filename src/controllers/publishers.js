@@ -11,7 +11,7 @@ export async function getPublisher(req, res) {
 }
 
 export function addPublisherGet(_req, res) {
-  res.send('GET /publishers/add');
+  res.render('add-publisher');
 }
 
 export function addPublisherPost(_req, res) {
