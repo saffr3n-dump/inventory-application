@@ -24,8 +24,12 @@ export async function editPublisherGet(req, res) {
   res.render('edit-publisher', { publisher });
 }
 
-export function editPublisherPost(_req, res) {
-  res.send('POST /publishers/:id/edit');
+export async function editPublisherPost(req, res) {
+  const publisher = await Publishers.editOne({
+    id: req.params.id,
+    ...req.body,
+  });
+  res.redirect(`/publishers/${publisher.id}`);
 }
 
 export function deletePublisher(_req, res) {

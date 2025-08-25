@@ -140,6 +140,17 @@ export class Publishers {
     const res = await pool.query(query, [name]);
     return res.rows[0];
   }
+
+  static async editOne({ id, name }) {
+    const query = `
+      UPDATE publishers SET
+        name = $1
+      WHERE id = $2
+      RETURNING id;
+    `;
+    const res = await pool.query(query, [name, id]);
+    return res.rows[0];
+  }
 }
 
 export class Genres {
