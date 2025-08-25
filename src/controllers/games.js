@@ -28,8 +28,9 @@ export async function editGameGet(req, res) {
   res.render('edit-game', { game, publishers, genres });
 }
 
-export function editGamePost(_req, res) {
-  res.send('POST /games/:id/edit');
+export async function editGamePost(req, res) {
+  const game = await Games.editOne({ id: req.params.id, ...req.body });
+  res.redirect(`/games/${game.id}`);
 }
 
 export function deleteGame(_req, res) {

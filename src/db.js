@@ -55,6 +55,31 @@ export class Games {
     await pool.query(newRelQuery, [game.id, genres]);
     return game;
   }
+
+  static async editOne({ id, title, publisher, genres }) {
+    if (!Array.isArray(genres)) genres = [genres];
+    const editGameQuery = `
+      UPDATE games SET
+        title = $1,
+        publisher_id = $2
+      WHERE id = $3
+      RETURNING id;
+    `;
+    const game = (await pool.query(editGameQuery, [title, publisher, id]))
+      .rows[0];
+    const deleteRelQuery = `
+      DELETE FROM games_genres
+      WHERE game_id = $1;
+    `;
+    await pool.query(deleteRelQuery, [id]);
+    const newRelQuery = `
+      INSERT INTO games_genres (game_id, genre_id)
+      SELECT $1, genre_id
+      FROM unnest($2::int[]) AS genre_id;
+    `;
+    await pool.query(newRelQuery, [id, genres]);
+    return game;
+  }
 }
 
 export class Publishers {
