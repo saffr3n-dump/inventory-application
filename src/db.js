@@ -206,4 +206,15 @@ export class Genres {
     const res = await pool.query(query, [name]);
     return res.rows[0];
   }
+
+  static async editOne({ id, name }) {
+    const query = `
+      UPDATE genres SET
+        name = $1
+      WHERE id = $2
+      RETURNING id;
+    `;
+    const res = await pool.query(query, [name, id]);
+    return res.rows[0];
+  }
 }
