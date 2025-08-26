@@ -41,6 +41,14 @@ export async function editGenrePost(req, res) {
   }
 }
 
-export function deleteGenre(_req, res) {
-  res.send('POST /genres/:id/delete');
+export async function deleteGenre(req, res) {
+  try {
+    const { id } = req.params;
+    await Genres.deleteOne(id);
+    res.redirect('/genres');
+  } catch {
+    throw new Error(
+      'Cannot delete a genre while there are still games associated with it.',
+    );
+  }
 }

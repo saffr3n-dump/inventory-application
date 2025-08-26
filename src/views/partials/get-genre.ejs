@@ -33,3 +33,7 @@
 <a href="/genres/<%= genre.id %>/edit">
   <button type="button">Edit</button>
 </a>
+
+<form action="/genres/<%= genre.id %>/delete" method="POST">
+  <button type="submit">Delete</button>
+</form>
