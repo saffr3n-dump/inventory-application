@@ -40,6 +40,8 @@ export async function editGamePost(req, res) {
   res.redirect(`/games/${game.id}`);
 }
 
-export function deleteGame(_req, res) {
-  res.send('POST /games/:id/delete');
+export async function deleteGame(req, res) {
+  const { id } = req.params;
+  await Games.deleteOne(id);
+  res.redirect('/games');
 }

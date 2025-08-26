@@ -80,6 +80,14 @@ export class Games {
     await pool.query(newRelQuery, [id, genres]);
     return game;
   }
+
+  static async deleteOne(id) {
+    const query = `
+      DELETE FROM games
+      WHERE id = $1;
+    `;
+    await pool.query(query, [id]);
+  }
 }
 
 export class Publishers {

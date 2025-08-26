@@ -24,3 +24,7 @@
 <a href="/games/<%= game.id %>/edit">
   <button type="button">Edit</button>
 </a>
+
+<form action="/games/<%= game.id %>/delete" method="POST">
+  <button type="submit">Delete</button>
+</form>
