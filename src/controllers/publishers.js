@@ -6,7 +6,9 @@ export async function listPublishers(_req, res) {
 }
 
 export async function getPublisher(req, res) {
-  const publisher = await Publishers.getOne(req.params.id);
+  const { id } = req.params;
+  const publisher = await Publishers.getOne(id);
+  if (!publisher) throw new Error(`There is no publisher with the ID ${id}.`);
   res.render('get-publisher', { publisher });
 }
 
@@ -15,21 +17,31 @@ export function addPublisherGet(_req, res) {
 }
 
 export async function addPublisherPost(req, res) {
-  const publisher = await Publishers.addOne(req.body);
-  res.redirect(`/publishers/${publisher.id}`);
+  try {
+    const publisher = await Publishers.addOne(req.body);
+    res.redirect(`/publishers/${publisher.id}`);
+  } catch {
+    throw new Error(`The publisher '${req.body.name}' already exists.`);
+  }
 }
 
 export async function editPublisherGet(req, res) {
-  const publisher = await Publishers.getOne(req.params.id);
+  const { id } = req.params;
+  const publisher = await Publishers.getOne(id);
+  if (!publisher) throw new Error(`There is no publisher with the ID ${id}.`);
   res.render('edit-publisher', { publisher });
 }
 
 export async function editPublisherPost(req, res) {
-  const publisher = await Publishers.editOne({
-    id: req.params.id,
-    ...req.body,
-  });
-  res.redirect(`/publishers/${publisher.id}`);
+  try {
+    const publisher = await Publishers.editOne({
+      id: req.params.id,
+      ...req.body,
+    });
+    res.redirect(`/publishers/${publisher.id}`);
+  } catch {
+    throw new Error(`The publisher '${req.body.name}' already exists.`);
+  }
 }
 
 export function deletePublisher(_req, res) {

@@ -6,7 +6,9 @@ export async function listGenres(_req, res) {
 }
 
 export async function getGenre(req, res) {
-  const genre = await Genres.getOne(req.params.id);
+  const { id } = req.params;
+  const genre = await Genres.getOne(id);
+  if (!genre) throw new Error(`There is no genre with the ID ${id}.`);
   res.render('get-genre', { genre });
 }
 
@@ -15,18 +17,28 @@ export function addGenreGet(_req, res) {
 }
 
 export async function addGenrePost(req, res) {
-  const genre = await Genres.addOne(req.body);
-  res.redirect(`/genres/${genre.id}`);
+  try {
+    const genre = await Genres.addOne(req.body);
+    res.redirect(`/genres/${genre.id}`);
+  } catch {
+    throw new Error(`The genre '${req.body.name}' already exists.`);
+  }
 }
 
 export async function editGenreGet(req, res) {
-  const genre = await Genres.getOne(req.params.id);
+  const { id } = req.params;
+  const genre = await Genres.getOne(id);
+  if (!genre) throw new Error(`There is no genre with the ID ${id}.`);
   res.render('edit-genre', { genre });
 }
 
 export async function editGenrePost(req, res) {
-  const genre = await Genres.editOne({ id: req.params.id, ...req.body });
-  res.redirect(`/genres/${genre.id}`);
+  try {
+    const genre = await Genres.editOne({ id: req.params.id, ...req.body });
+    res.redirect(`/genres/${genre.id}`);
+  } catch {
+    throw new Error(`The genre '${req.body.name}' already exists.`);
+  }
 }
 
 export function deleteGenre(_req, res) {

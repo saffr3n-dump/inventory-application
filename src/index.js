@@ -17,6 +17,14 @@ app.use('/games', gamesRouter);
 app.use('/genres', genresRouter);
 app.use('/publishers', publishersRouter);
 
+app.use(() => {
+  throw new Error('The requested page does not exist.');
+});
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.render('error-page', { error: err });
+});
+
 const port = Number(process.env.PORT || '3000');
 app.listen(port, (err) => {
   if (err) throw err;
