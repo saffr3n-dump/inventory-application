@@ -159,6 +159,14 @@ export class Publishers {
     const res = await pool.query(query, [name, id]);
     return res.rows[0];
   }
+
+  static async deleteOne(id) {
+    const query = `
+      DELETE FROM publishers
+      WHERE id = $1;
+    `;
+    await pool.query(query, [id]);
+  }
 }
 
 export class Genres {

@@ -44,6 +44,14 @@ export async function editPublisherPost(req, res) {
   }
 }
 
-export function deletePublisher(_req, res) {
-  res.send('POST /publishers/:id/delete');
+export async function deletePublisher(req, res) {
+  try {
+    const { id } = req.params;
+    await Publishers.deleteOne(id);
+    res.redirect('/publishers');
+  } catch {
+    throw new Error(
+      'Cannot delete a publisher while there are still games associated with it.',
+    );
+  }
 }

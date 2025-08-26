@@ -35,3 +35,7 @@
 <a href="/publishers/<%= publisher.id %>/edit">
   <button type="button">Edit</button>
 </a>
+
+<form action="/publishers/<%= publisher.id %>/delete" method="POST">
+  <button type="submit">Delete</button>
+</form>
